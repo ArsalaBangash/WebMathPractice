@@ -1,10 +1,10 @@
-import { Stack } from 'typescript-collections';
+import {Stack} from 'typescript-collections';
 import {
   ChallengeParams,
   GenerateChallenge,
   ChallengeType,
 } from '../models/math_question';
-import { getChallengeTokens } from './expression/generator';
+import {getChallengeTokens} from './expression/generator';
 import {
   ExprToken,
   MathOperations,
@@ -12,11 +12,7 @@ import {
   TokenType,
 } from './expression/models';
 
-const getInfixTemplate = (
-  op: Operator,
-  left: string,
-  right: string,
-): string => {
+const getInfixTemplate = (op: Operator, left: string, right: string): string => {
   switch (op) {
     case Operator.Addition: {
       return `(${left}+${right})`;
@@ -32,9 +28,9 @@ const getInfixTemplate = (
 };
 
 const getLatexTemplate = (
-  op: Operator,
-  left: string,
-  right: string,
+    op: Operator,
+    left: string,
+    right: string,
 ): string => {
   switch (op) {
     case Operator.Addition: {
@@ -60,7 +56,7 @@ const expressionLatex = (tokens: ExprToken[]): string => {
     if (tokens[i].type === TokenType.Operator) {
       const currentOp = tokens[i].value as Operator;
       exprStack.push(
-        getLatexTemplate(currentOp, exprStack.pop()!, exprStack.pop()!),
+          getLatexTemplate(currentOp, exprStack.pop()!, exprStack.pop()!),
       );
     } else {
       exprStack.push(tokens[i].value.toString());
@@ -75,7 +71,7 @@ const expressionInfix = (tokens: ExprToken[]): string => {
     if (tokens[i].type === TokenType.Operator) {
       const currentOp = tokens[i].value as Operator;
       exprStack.push(
-        getInfixTemplate(currentOp, exprStack.pop()!, exprStack.pop()!),
+          getInfixTemplate(currentOp, exprStack.pop()!, exprStack.pop()!),
       );
     } else {
       exprStack.push(tokens[i].value.toString());
@@ -85,11 +81,11 @@ const expressionInfix = (tokens: ExprToken[]): string => {
 };
 
 export const generateExpressionChallenge: GenerateChallenge = (
-  params: ChallengeParams,
+    params: ChallengeParams,
 ) => {
   const tokens: ExprToken[] = getChallengeTokens(
-    params.operators,
-    params.difficulty,
+      params.operators,
+      params.difficulty,
   );
   const difficulty = params.difficulty;
   const exprLatex = expressionLatex(tokens);
